@@ -87,27 +87,36 @@ $(function () {
         label: "en:",
         name: "en"
       }
-      // {
-      //  label: "createTime:",
-      //  name: "createTime",
-      //  type: "datetime"
+      // , {
+      //   label: "createTime:",
+      //   name: "createTime",
+      //   type: "datetime",
+      //   def: function () {
+      //     return new Date();
+      //   },
+      //   format: 'YYYY-MM-DD',
+      //   fieldInfo: 'Verbose date format'
       // }
     ]
   });
 
   $('#example').on('click', 'tbody td:not(:first-child)', function (e) {
-    if ( $(this).index() < 6 ) {
+    if ($(this).index() < 6) {
       editor.bubble(this);
     }
   });
 
-  $('#example').on( 'click', 'a.remove', function (e) {
+  $('#example').on('click', 'a.remove', function (e) {
     editor
-      .title( 'Delete row' )
-      .message( 'Are you sure you wish to delete this row?' )
-      .buttons( { "label": "Delete", "fn": function () { editor.submit() } } )
-      .remove( $(this).closest('tr') );
-  } );
+      .title('Delete row')
+      .message('Are you sure you wish to delete this row?')
+      .buttons({
+        "label": "Delete", "fn": function () {
+          editor.submit()
+        }
+      })
+      .remove($(this).closest('tr'));
+  });
 
   var table = $('#example').DataTable({
     dom: "Bfrtip",
@@ -141,7 +150,7 @@ $(function () {
 //        {data: "author"},
       {data: "createTime"},
       {data: "modifyTime"}
-      ,{
+      , {
         data: null,
         defaultContent: '<a href="#" class="remove">删除</a>',
         orderable: false
