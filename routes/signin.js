@@ -14,7 +14,6 @@ router.get('/', checkNotLogin, function(req, res, next) {
 router.post('/', checkNotLogin, function(req, res, next) {
     var name = req.fields.name;
     var password = req.fields.password;
-
     UserModel.getUserByName(name)
         .then(function (user) {
             if (!user) {

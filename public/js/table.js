@@ -11,7 +11,7 @@ $(function () {
         ids.push(key);
         params = data.data[key];
       }
-      // console.log(result);
+      console.log(params);
       if (type == "create") {
         $.ajax({
           type: "POST",
@@ -51,7 +51,7 @@ $(function () {
             console.error(err);
           }
         });
-      } else if(type == "remove"){//remove
+      } else if (type == "remove") {//remove
         params = {
           "ids": ids
         };
@@ -87,14 +87,11 @@ $(function () {
         label: "en:",
         name: "en"
       }
-//        {
-//        label: "Start date:",
-//        name: "start_date",
-//        type: "datetime"
-//      }, {
-//        label: "Salary:",
-//        name: "salary"
-//      }
+      // {
+      //  label: "createTime:",
+      //  name: "createTime",
+      //  type: "datetime"
+      // }
     ]
   });
 
@@ -107,7 +104,7 @@ $(function () {
     language: {
       url: '/data/Chinese.json'
     },
-    ajax: "/table/getData.do",
+    ajax: "/editor/getData",
     processing: true,//后台分页
     serverSide: true,
     // deferLoading: 57,
@@ -136,30 +133,40 @@ $(function () {
       {data: "modifyTime"}
 //        {data: "salary", render: $.fn.dataTable.render.number(',', '.', 0, '$')}
     ],
+    // columnDefs: [
+    //   {
+    //     "data": "test",
+    //     "render": function (data, type, full) {
+    //       console.log(data);
+    //       return '<button type="button" class="btn btn-primary ok" data-dismiss="modal">增加</button>';
+    //     },
+    //     "targets": [5]
+    //   }
+    // ],
     order: [1, 'asc'],
     select: {
       style: 'os',
       selector: 'td:first-child'
     },
     buttons: [
-      {extend: "create", text:"创建",editor: editor},
-      {extend: "edit", text:"编辑",editor: editor},
-      {extend: "remove", text:"删除",editor: editor},
+      {extend: "create", text: "创建", editor: editor},
+      {extend: "edit", text: "编辑", editor: editor},
+      {extend: "remove", text: "删除", editor: editor},
       {
         text: "导入",
         // className:"btn btn-primary btn-lg",
-        init: function ( dt, node, config ) {
-          $("#uploadBtn").on("click",function () {
+        init: function (dt, node, config) {
+          $("#uploadBtn").on("click", function () {
             var formFile = document.getElementById("formFile");
-            if(!formFile.value.endsWith(".json")){
+            if (!formFile.value.endsWith(".json")) {
               $.alert('请上传json文件');
               return;
             }
             var file = formFile.files[0];
             // console.log(file);
             var obj = {
-              fileName:formFile.name,
-              file:file
+              fileName: formFile.name,
+              file: file
             };
 
             var formData = new FormData(); //构造空对象，下面用append 方法赋值。
@@ -193,7 +200,7 @@ $(function () {
           });
 
         },
-        action: function ( e, dt, node, config ) {
+        action: function (e, dt, node, config) {
           $('#impModal').modal({
             keyboard: true
           });
@@ -202,9 +209,9 @@ $(function () {
       {
         // extend: "selectedSingle",
         text: "导出",
-        action: function ( e, dt, node, config ) {
-          var datas = table.rows( { selected: true } ).data();
-          if(datas.length>0){
+        action: function (e, dt, node, config) {
+          var datas = table.rows({selected: true}).data();
+          if (datas.length > 0) {
             // window.open("/data/test.json");
             console.log(datas);
             var arr = [];
@@ -233,7 +240,7 @@ $(function () {
                 error(err);
               }
             });
-          }else{
+          } else {
             var search = $("#example_filter").find('input[type=search]').val();
             window.open("/editor/exportAll?search=" + encodeURI(search));
           }

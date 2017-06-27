@@ -4,10 +4,8 @@
 var bodyParser = require('body-parser');
 var logger = require('morgan');
 var LanguageModel = require('../models/languages');
-var utils = require('../lib/util');
 var fs = require('fs');
 var multiparty = require('multiparty');
-
 module.exports = function (app) {
 
   app.use(logger('dev'));
@@ -22,12 +20,10 @@ module.exports = function (app) {
 //   next();
 // });
 
-  // app.post('/',function (req,res) {
-  //   console.log('--------------' + req.body);
-  //   console.log(req.params.id);
-  //   console.log(req.query);
-  //   console.log(req.body);
-  // });
+  var errorFun = function (err) {
+    console.error(err);
+    res.json({"success": false, "message": err.message || err});
+  };
 
   /**
    * 更新一条数据
@@ -41,10 +37,7 @@ module.exports = function (app) {
         "success": true
       });
       next();
-    },function (result) {
-      res.json(result);
-      next();
-    });
+    }, errorFun);
   });
 
   /**
@@ -59,10 +52,7 @@ module.exports = function (app) {
         "success": true
       });
       next();
-    }, function (result) {
-      res.json(result);
-      next();
-    });
+    }, errorFun);
   });
 
   /**
@@ -72,15 +62,13 @@ module.exports = function (app) {
    */
   app.post('/editor/delete', function (req, res, next) {
     console.log(req.body);
-    LanguageModel.delLanguageByIds(req.body.ids, function (result) {
+    LanguageModel.delLanguageByIds(req.body.ids, function () {
       res.json({
+        success: true,
         data: []
       });
       next();
-    }, function (result) {
-      res.json(result);
-      next();
-    });
+    }, errorFun);
   });
 
   /**
@@ -107,10 +95,7 @@ module.exports = function (app) {
       res.end(JSON.stringify(result, null, 2));
 
       next();
-    }, function (result) {
-      res.json(result);
-      next();
-    });
+    }, errorFun);
   });
 
   /**
@@ -128,7 +113,7 @@ module.exports = function (app) {
     });
     fs.writeFile(path, JSON.stringify(datas, null, 2), function (err, data) {
       if (err) {
-        console.error(err);
+        errorFun(err);
       } else {
         res.json({
           'path': path.substring(path.indexOf('/')),
@@ -143,48 +128,59 @@ module.exports = function (app) {
    * @author jw
    * @date 2017-06-26
    */
-  app.post('/editor/import',function (req, res, next) {
+  app.post('/editor/import', function (req, res, next) {
     var form = new multiparty.Form();
     form.parse(req, function (err, fields, files) {
       console.log(fields);
       console.log(files);
-      fs.readFile(files.file[0].path,function(err,data){
-        var result = {
-          "success":false
-        };
-        if(!data || err){
-          console.error(err);
-          result.message = err;
-          res.json(result);
+      fs.readFile(files.file[0].path, function (err, data) {
+        if (!data || err) {
+          errorFun(err);
           return;
         }
         // var fileName = files.file[0].originalFilename;
         data = JSON.parse(data);
         // console.log(data);
         // console.log(data);
-        if(!Array.isArray(data)){
-          result.message = "内容有误！不是数组格式！";
-          res.json(result);
+        if (!Array.isArray(data)) {
+          errorFun("内容有误！不是数组格式！");
           return;
         }
         var b = data.every(function (obj) {
           return obj.code && (obj.zh || obj.en);
         });
         // console.log(b);
-        if(!b){
-          result.message = "内容有误！";
-          res.json(result);
-        }else{
+        if (!b) {
+          errorFun("内容有误！");
+        } else {
           LanguageModel.create(data, function (result) {
-              res.json({
-                "data": [result],
-                "success": true
-              });
-            }, function (result) {
-              res.json(result);
+            res.json({
+              "data": [result],
+              "success": true
             });
+          }, function (result) {
+            res.json(result);
+          });
         }
       });
     });
+  });
+
+  /**
+   * 分布显示数据
+   * @author jw
+   * @date 2017-06-27
+   */
+  app.get('/editor/getData', function (req, res, next) {
+    // console.error(req.query);
+    LanguageModel.getDatas({
+      start: req.query.start,
+      pageSize: req.query.length,
+      search: req.query.search.value
+    }, function (result) {
+      result.draw = req.query.draw;
+      res.json(result);
+      next();
+    }, errorFun);
   });
 };

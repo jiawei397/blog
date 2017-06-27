@@ -1,23 +1,6 @@
 var Language = require('../lib/mongo2').Language;
 var utils = require('../lib/util');
 var dbHelper = require('../lib/dbHelper');
-var fs = require('fs');
-
-// 将 post 的 content 从 markdown 转换成 html
-// Language.plugin('contentAfter', {
-//   afterFind: function (datas) {
-//     return datas.map(function (data) {
-//       data["DT_RowId"] = data["_id"];
-//       return data;
-//     });
-//   },
-//   afterFindOne: function (data) {
-//     if (data) {
-//       data["DT_RowId"] = data["_id"];
-//     }
-//     return data;
-//   }
-// });
 
 var transfData = function (data) {
   if(!data || !data.toObject){
@@ -28,7 +11,7 @@ var transfData = function (data) {
   data.zh = data.zh || '';
   data.createTime = data.createTime.format('yyyy-MM-dd HH:mm:ss');
   data.modifyTime = data.modifyTime.format('yyyy-MM-dd HH:mm:ss');
-  // console.log(data);
+  console.log(data);
   return data;
 };
 
@@ -38,7 +21,7 @@ module.exports = {
     return Language.create(data, function (err, doc) {
       var result = {"success":false,"data":[]};
       if (err) {
-        errFun({"success":false,"message":err.message});
+        errFun(err);
       } else {
         result = transfData(doc);
         callback(result);
@@ -46,7 +29,7 @@ module.exports = {
     });
   },
   // 按创建时间降序获取所有用户文章或者某个特定用户的所有文章
-  getDatas: function getDatas(config,callback) {
+  getDatas: function getDatas(config,callback,errFun) {
     var query = {};
     // if (author) {
     //   query.author = author;
@@ -68,7 +51,8 @@ module.exports = {
     }
     return dbHelper.pageQuery(Language,config, function(err, $page){
       if(err){
-        throw new Error(err);
+        return errFun(getErrMsg(err));
+        // throw new Error(err);
       }else{
         // res.render('index'{
         //   records: $page.results,
@@ -110,7 +94,7 @@ module.exports = {
     //   });
   },
   // 按创建时间降序获取所有用户文章或者某个特定用户的所有文章
-  getAllDatas: function getAllDatas(config,callback) {
+  getAllDatas: function getAllDatas(config,callback,errFun) {
     var query = {};
     if(config.search){
       // config.queryParams = {'zh': new RegExp(config.search)};
@@ -128,7 +112,8 @@ module.exports = {
       .find(query)
       .exec(function (err, result) {
         if (err) {
-          throw new Error(err);
+          return errFun(err);
+          // throw new Error(err);
         } else {
           result = result.map(function (data) {
             return transfData(data);
@@ -146,11 +131,11 @@ module.exports = {
       .exec();
   },
   // 更新一行数据
-  updateLanguageById: function updateLanguageById(id, data, callback) {
+  updateLanguageById: function updateLanguageById(id, data, callback,errFun) {
     data.modifyTime = new Date();
     return Language.findByIdAndUpdate({_id: id}, {$set: data}, function (err, result) {
       if (err) {
-        throw  new Error(err);
+        return errFun(err);
       }
       result = transfData(result);
       utils.combine(result, data);
@@ -160,23 +145,22 @@ module.exports = {
   },
 
   // 通过用户 id 和文章 id 删除一行数据
-  delLanguageById: function delLanguageById(id, callback) {
+  delLanguageById: function delLanguageById(id, callback,errFun) {
     return Language.remove({_id: id}, function (err, doc) {
       if (err) {
-        throw  new Error(err);
-        return MongodbError(res, err);
+        return errFun(err);
       }
       callback(doc);
     });
   },
 
   // 通过用户 id 和文章 id 删除一行数据
-  delLanguageByIds: function delLanguageByIds(ids, callback) {
+  delLanguageByIds: function delLanguageByIds(ids, callback, errFun) {
     return Language.remove({_id: { $in: ids }}, function (err, doc) {
       if (err) {
-        throw  new Error(err);
+        return errFun(err);
       }
-      callback(doc);
+      callback();
     });
   }
 };

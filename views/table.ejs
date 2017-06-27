@@ -1,4 +1,16 @@
 <%- include('header') %>
+<link rel="stylesheet" href="/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="/css/select.dataTables.min.css">
+<link rel="stylesheet" href="/css/editor.dataTables.min.css">
+<script src="/plugins/bootstrap.min.js"></script>
+<script src="/plugins/jquery.dataTables.min.js"></script>
+<script src="/plugins/dataTables.buttons.min.js"></script>
+<script src="/plugins/dataTables.select.min.js"></script>
+<script src="/plugins/dataTables.editor.min.js"></script>
+<script src="/js/alert.js"></script>
+<script src="/js/table.js"></script>
+
 <div id="bts"></div>
 <table id="example" class="display" cellspacing="0" width="100%">
   <thead>
@@ -13,5 +25,6 @@
   </thead>
 </table>
 
+<%- include('components/alert') %>
 <%- include('components/import') %>
 <%- include('footer') %>
