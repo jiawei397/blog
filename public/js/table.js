@@ -2,63 +2,72 @@ $(function () {
   var editor = new $.fn.dataTable.Editor({
     // ajax:"/table/update.do",
     ajax: function (method, url, data, success, error) {
-      console.log(method);
-      console.log(data);
+      // console.log(method);
+      // console.log(data);
       var type = data.action;
       var ids = [];
-      var result = {};
+      var params = {};
       for (var key in data.data) {
         ids.push(key);
-        result = data.data[key];
+        params = data.data[key];
       }
       // console.log(result);
       if (type == "create") {
         $.ajax({
           type: "POST",
           url: "/editor/add",
-          data: JSON.stringify(result),
+          data: JSON.stringify(params),
           contentType: "application/json; charset=utf-8",
           dataType: "json",
           success: function (json) {
-            // console.error(json);
             if (json.success) {
               success(json);
             } else {
               error(json);
-              alert(json.message);
+              $.alert(json.message);
             }
           },
           error: function (err) {
-            // console.error(err);
+            console.error(err);
             error(err);
           }
         });
-      } else if (type == "update") {
+      } else if (type == "edit") {
         $.ajax({
           type: "POST",
           url: "/editor/update/" + ids[0],
-          data: JSON.stringify(result),
+          data: JSON.stringify(params),
           contentType: "application/json; charset=utf-8",
           dataType: "json",
           success: function (json) {
-            success(json);
+            if (json.success) {
+              success(json);
+            } else {
+              error(json);
+              $.alert(json.message);
+            }
           },
           error: function (err) {
             console.error(err);
           }
         });
       } else if(type == "remove"){//remove
-        result = {
+        params = {
           "ids": ids
         };
         $.ajax({
           type: "POST",
           url: "/editor/delete",
-          data: JSON.stringify(result),
+          data: JSON.stringify(params),
           contentType: "application/json; charset=utf-8",
           dataType: "json",
           success: function (json) {
-            success(json);
+            if (json.success) {
+              success(json);
+            } else {
+              error(json);
+              $.alert(json.message);
+            }
           },
           error: function (err) {
             console.error(err);
@@ -143,7 +152,7 @@ $(function () {
           $("#uploadBtn").on("click",function () {
             var formFile = document.getElementById("formFile");
             if(!formFile.value.endsWith(".json")){
-              alert('请上传json文件');
+              $.alert('请上传json文件');
               return;
             }
             var file = formFile.files[0];
@@ -166,14 +175,17 @@ $(function () {
               cache: false,
               success: function (json) {
                 if (json.success) {
-                  alert("导入成功")
+                  $('#impModal').modal('hide');
+                  table.ajax.reload();//刷新数据
+                  $.alert('导入成功');
                 } else {
-                  alert(json.message);
+                  $.alert(json.message);
                 }
                 $("#form")[0].reset();
               },
               error: function (err) {
-                // console.error(err);
+                console.error(err);
+                $.alert(err.message);
                 $("#form")[0].reset();
               }
             });
@@ -182,7 +194,7 @@ $(function () {
 
         },
         action: function ( e, dt, node, config ) {
-          $('#myModal').modal({
+          $('#impModal').modal({
             keyboard: true
           });
         }
@@ -214,7 +226,7 @@ $(function () {
                   $('#goto').get(0).click();
                 } else {
                   error(json);
-                  alert(json.message);
+                  $.alert(json.message);
                 }
               },
               error: function (err) {

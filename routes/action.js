@@ -41,6 +41,9 @@ module.exports = function (app) {
         "success": true
       });
       next();
+    },function (result) {
+      res.json(result);
+      next();
     });
   });
 

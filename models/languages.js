@@ -20,9 +20,8 @@ var fs = require('fs');
 // });
 
 var transfData = function (data) {
-  console.log(data);
-  if(!data){
-    return;
+  if(!data || !data.toObject){
+    return {"success":false,"message":"数据错误！"};
   }
   data = data.toObject({virtuals: true});
   data.en = data.en || '';
@@ -36,15 +35,9 @@ var transfData = function (data) {
 module.exports = {
   // 创建新的一行国际化键值
   create: function create(data, callback, errFun) {
-    console.error("111111111111111111111");
-    console.error(data);
-    // data.createTime = data.modifyTime = new Date();
     return Language.create(data, function (err, doc) {
       var result = {"success":false,"data":[]};
-      console.error("--------------22222222")
       if (err) {
-        // throw new Error(err);
-        // console.error(err);
         errFun({"success":false,"message":err.message});
       } else {
         result = transfData(doc);
