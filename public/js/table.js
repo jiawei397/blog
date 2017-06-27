@@ -96,8 +96,18 @@ $(function () {
   });
 
   $('#example').on('click', 'tbody td:not(:first-child)', function (e) {
-    editor.bubble(this);
+    if ( $(this).index() < 6 ) {
+      editor.bubble(this);
+    }
   });
+
+  $('#example').on( 'click', 'a.remove', function (e) {
+    editor
+      .title( 'Delete row' )
+      .message( 'Are you sure you wish to delete this row?' )
+      .buttons( { "label": "Delete", "fn": function () { editor.submit() } } )
+      .remove( $(this).closest('tr') );
+  } );
 
   var table = $('#example').DataTable({
     dom: "Bfrtip",
@@ -131,6 +141,11 @@ $(function () {
 //        {data: "author"},
       {data: "createTime"},
       {data: "modifyTime"}
+      ,{
+        data: null,
+        defaultContent: '<a href="#" class="remove">删除</a>',
+        orderable: false
+      }
 //        {data: "salary", render: $.fn.dataTable.render.number(',', '.', 0, '$')}
     ],
     // columnDefs: [
