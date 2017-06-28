@@ -9,7 +9,6 @@ var flash = require('connect-flash');
 var config = require('config-lite');
 // 路由
 var routes = require('./routes');
-var action = require('./routes/action');
 var pkg = require('./package');
 
 //打印日志
