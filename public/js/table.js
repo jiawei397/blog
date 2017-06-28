@@ -12,6 +12,10 @@ $(function () {
       }
       console.log(params);
       if (type == "create") {
+        if(!params["code"] || params["code"] == ""){
+          error("code不能为空");
+          return;
+        }
         $.ajax({
           type: "POST",
           url: "/table/add",
