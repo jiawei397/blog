@@ -128,7 +128,8 @@ $(function () {
     serverSide: true,
     // deferLoading: 57,
     // ajax: "/data/test.json",
-    // pagingType: "full",
+    pageLength: 15,//默认是10
+    pagingType: "numbers",//numbers,simple,simple_numbers,full,full_numbers,first_last_numbers
     columns: [
       {
         data: null,
