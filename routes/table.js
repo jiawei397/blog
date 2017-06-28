@@ -13,6 +13,10 @@ var multiparty = require('multiparty');
 var R = require("ramda");
 
 var errorFun = function (err) {
+  errorCallback(res, err);
+};
+
+var errorCallback = function (res, err) {
   console.error(err);
   res.json({"success": false, "message": err.message || err});
 };
@@ -21,11 +25,12 @@ router.use(logger('dev'));
 router.use(bodyParser.urlencoded({extended: false}));
 router.use(bodyParser.json());
 
+router.use(checkLogin);//jw 2017.06.28 这样，这个路由的所有方法，都要求登陆才能调用
 
 //一个简单的路由访问日志记录器
 //所有请求都会首先触及这个中间件
 router.use(function (req, res, next) {
-  console.log('%s %s %s', req.method, req.url, req.path);
+  console.log('访问table路由\n %s %s %s', req.method, req.url, req.path);
   next();
 });
 
@@ -34,7 +39,7 @@ router.use(function (req, res, next) {
  * @author jw
  * @date 2017-06-27
  */
-router.get('/', checkLogin, function (req, res, next) {
+router.get('/', function (req, res, next) {
   res.render('table');
 });
 
@@ -43,7 +48,7 @@ router.get('/', checkLogin, function (req, res, next) {
  * @author jw
  * @date 2017-06-19
  */
-router.post('/add',function (req, res, next) {
+router.post('/add', function (req, res, next) {
   var obj = req.body;
   obj.author = req.session.user.name;
   LanguageModel.create(obj, function (result) {
@@ -120,7 +125,7 @@ router.post('/export', function (req, res, next) {
   datas = R.project(['code', 'zh', 'en'])(datas);
   fs.writeFile(path, util.stringify(datas, null, 2), function (err, data) {
     if (err) {
-      errorFun(err);
+      errorCallback(res, err);
     } else {
       res.json({
         'path': path.substring(path.indexOf('/')),
@@ -142,15 +147,21 @@ router.post('/import', function (req, res, next) {
     console.log(files);
     fs.readFile(files.file[0].path, function (err, data) {
       if (!data || err) {
-        errorFun(err);
+        errorCallback(res, err);
         return;
       }
       // var fileName = files.file[0].originalFilename;
-      data = JSON.parse(data);
+      try {
+        console.log(data.toString().replace(/\\t/g, ''));
+        data = JSON.parse(data.toString().replace(/\\t/g, ''));
+      } catch (e) {
+        errorCallback(res, "格式有误！");
+        return;
+      }
       // console.log(data);
       // console.log(data);
       if (!Array.isArray(data)) {
-        errorFun("内容有误！不是数组格式！");
+        errorCallback(res, "内容有误！不是数组格式！");
         return;
       }
       var b = data.every(function (obj) {
@@ -158,7 +169,7 @@ router.post('/import', function (req, res, next) {
       });
       // console.log(b);
       if (!b) {
-        errorFun("内容有误！");
+        errorCallback(res, "内容有误！");
       } else {
         LanguageModel.create(data, function (result) {
           res.json({

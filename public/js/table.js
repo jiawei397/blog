@@ -1,6 +1,5 @@
 $(function () {
   var editor = new $.fn.dataTable.Editor({
-    // ajax:"/table/update.do",
     ajax: function (method, url, data, success, error) {
       // console.log(method);
       // console.log(data);
@@ -235,8 +234,9 @@ $(function () {
 
         },
         action: function (e, dt, node, config) {
-          $('#impModal').modal({
-            keyboard: true
+          $('#impModal').modal('show');
+          $('#impModal').find('.close').click(function () {
+            $('#impModal').modal("hide");
           });
         }
       },
