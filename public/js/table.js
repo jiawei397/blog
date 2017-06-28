@@ -15,7 +15,7 @@ $(function () {
       if (type == "create") {
         $.ajax({
           type: "POST",
-          url: "/editor/add",
+          url: "/table/add",
           data: JSON.stringify(params),
           contentType: "application/json; charset=utf-8",
           dataType: "json",
@@ -35,7 +35,7 @@ $(function () {
       } else if (type == "edit") {
         $.ajax({
           type: "POST",
-          url: "/editor/update/" + ids[0],
+          url: "/table/update/" + ids[0],
           data: JSON.stringify(params),
           contentType: "application/json; charset=utf-8",
           dataType: "json",
@@ -57,7 +57,7 @@ $(function () {
         };
         $.ajax({
           type: "POST",
-          url: "/editor/delete",
+          url: "/table/delete",
           data: JSON.stringify(params),
           contentType: "application/json; charset=utf-8",
           dataType: "json",
@@ -123,7 +123,7 @@ $(function () {
     language: {
       url: '/data/Chinese.json'
     },
-    ajax: "/editor/getData",
+    ajax: "/table/getData",
     processing: true,//后台分页
     serverSide: true,
     // deferLoading: 57,
@@ -147,12 +147,21 @@ $(function () {
       {data: "code"},
       {data: "zh"},
       {data: "en"},
-//        {data: "author"},
-      {data: "createTime"},
-      {data: "modifyTime"}
+      {data: "author",
+        width:50,
+        render: function (data, type, row) {
+            if(!data || data == ""){
+              return "admin";
+            }
+           return data;
+         }
+      },
+      {data: "createTime",width:150},
+      {data: "modifyTime",width:150}
       , {
         data: null,
         defaultContent: '<a href="#" class="remove">删除</a>',
+        width:30,
         orderable: false
       }
 //        {data: "salary", render: $.fn.dataTable.render.number(',', '.', 0, '$')}
@@ -199,7 +208,7 @@ $(function () {
 
             $.ajax({
               type: "POST",
-              url: "/editor/import",
+              url: "/table/import",
               data: formData,
               contentType: false, // 告诉jQuery不要去设置Content-Type请求头
               processData: false, // 告诉jQuery不要去处理发送的数据
@@ -245,7 +254,7 @@ $(function () {
             console.log(arr);
             $.ajax({
               type: "POST",
-              url: "/editor/export",
+              url: "/table/export",
               data: JSON.stringify(arr),
               contentType: "application/json; charset=utf-8",
               dataType: "json",
@@ -266,7 +275,7 @@ $(function () {
             });
           } else {
             var search = $("#example_filter").find('input[type=search]').val();
-            window.open("/editor/exportAll?search=" + encodeURI(search));
+            window.open("/table/exportAll?search=" + encodeURI(search));
           }
         }
       }

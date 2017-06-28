@@ -9,6 +9,7 @@ var transfData = function (data) {
   data = data.toObject({virtuals: true});
   data.en = data.en || '';
   data.zh = data.zh || '';
+  data.author = data.author || '';
   data.createTime = data.createTime.format('yyyy-MM-dd HH:mm:ss');
   data.modifyTime = data.modifyTime.format('yyyy-MM-dd HH:mm:ss');
   console.log(data);

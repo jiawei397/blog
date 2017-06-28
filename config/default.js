@@ -1,6 +1,7 @@
 /**
  * Created by Administrator on 2017/1/6 0006.
  */
+var path = require('path');
 module.exports = {
     port: 80,
     session: {
@@ -8,8 +9,6 @@ module.exports = {
         key: 'myblog',
         maxAge: 2592000000
     },
-    upload:{
-      path: process.cwd() + '/uploads'
-    },
+    uploadDir:path.join(__dirname, '../public/img'),// 上传文件目录
     mongodb: 'mongodb://localhost:27018/myblog'
 };
