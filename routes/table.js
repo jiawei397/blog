@@ -152,8 +152,7 @@ router.post('/import', function (req, res, next) {
       }
       // var fileName = files.file[0].originalFilename;
       try {
-        console.log(data.toString().replace(/\\t/g, ''));
-        data = JSON.parse(data.toString().replace(/\\t/g, ''));
+        data = JSON.parse(data);//TODO json格式，明天研究一下导出的文件为什么导不进去
       } catch (e) {
         errorCallback(res, "格式有误！");
         return;
