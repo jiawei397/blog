@@ -17,18 +17,20 @@ $(function () {
 
     /* html 复原不在 _init() 里面做了，重复调用时会有问题，直接在 _alert/_confirm 里面做 */
 
-
     var _alert = function (options) {
       alr.html(ahtml);	// 复原
-      alr.find('.ok').removeClass('btn-success').addClass('btn-primary');
       alr.find('.cancel').hide();
       _dialog(options);
+
+      alr.find('.close').click(function () {
+        alr.modal("hide");
+      });
 
       return {
         on: function (callback) {
           if (callback && callback instanceof Function) {
             alr.find('.ok').click(function () {
-              callback(true)
+              callback(true);
             });
           }
         }
@@ -76,10 +78,7 @@ $(function () {
       });
 
       alr.html(html);
-      alr.modal({
-        width: 500,
-        backdrop: 'static'
-      });
+      alr.modal('show');
     };
 
     return {
