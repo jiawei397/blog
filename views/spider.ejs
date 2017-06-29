@@ -1,0 +1,14 @@
+<%- include('header') %>
+<div class="eight wide column">
+  <div class="ui segment">
+    <h3>复制下面内容到以下位置</h3>
+    <pre><%= windowDest %></pre>
+    <pre><%= linuxDest %></pre>
+    <pre>
+    <% datas.forEach(function (data) { %>
+    <%- data %>
+    <% }) %>
+    </pre>
+  </div>
+</div>
+<%- include('footer') %>

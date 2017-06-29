@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "body-parser": "~1.17.2",
+    "cheerio": "^1.0.0-rc.1",
     "config-lite": "^1.5.0",
     "connect-flash": "^0.1.1",
     "connect-mongo": "^1.3.2",
@@ -36,7 +37,9 @@
     "multiparty": "^4.1.3",
     "objectid-to-timestamp": "^1.3.0",
     "opn": "^4.0.2",
+    "q": "^1.5.0",
     "ramda": "^0.24.1",
+    "request": "^2.81.0",
     "serve-favicon": "~2.3.0",
     "sha1": "^1.1.1",
     "supertest": "^2.0.1",
