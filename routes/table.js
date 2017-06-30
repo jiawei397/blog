@@ -12,10 +12,6 @@ var util = require('../lib/util');
 var multiparty = require('multiparty');
 var R = require("ramda");
 
-var errorFun = function (err) {
-  errorCallback(res, err);
-};
-
 var errorCallback = function (res, err) {
   console.error(err);
   res.json({"success": false, "message": err.message || err});
@@ -51,13 +47,16 @@ router.get('/', function (req, res, next) {
 router.post('/add', function (req, res, next) {
   var obj = req.body;
   obj.author = req.session.user.name;
+  obj.createTime = obj.modifyTime = new Date();
   LanguageModel.create(obj, function (result) {
     res.json({
       "data": [result],
       "success": true
     });
     next();
-  }, errorFun);
+  }, function (err) {
+    errorCallback(res, err);
+  });
 });
 
 /**
@@ -72,7 +71,9 @@ router.post('/update/:id', function (req, res, next) {
       "success": true
     });
     next();
-  }, errorFun);
+  }, function (err) {
+    errorCallback(res, err);
+  });
 });
 
 /**
@@ -88,7 +89,9 @@ router.post('/delete', function (req, res, next) {
       data: []
     });
     next();
-  }, errorFun);
+  }, function (err) {
+    errorCallback(res, err);
+  });
 });
 
 /**
@@ -111,7 +114,9 @@ router.get('/exportAll', function (req, res, next) {
     res.end(util.stringify(datas, null, 2));
 
     next();
-  }, errorFun);
+  }, function (err) {
+    errorCallback(res, err);
+  });
 });
 
 /**
@@ -196,9 +201,17 @@ router.get('/getData', function (req, res, next) {
     search: req.query.search.value
   }, function (result) {
     result.draw = req.query.draw;
+    var datas = result.data;
+    datas = datas.map(function (data) {
+      data.DT_RowId = data._id;
+      data.createTime && (data.createTime = data.createTime.format('yyyy-MM-dd HH:mm:ss'));
+      data.modifyTime && (data.modifyTime = data.modifyTime.format('yyyy-MM-dd HH:mm:ss'));
+    });
     res.json(result);
     next();
-  }, errorFun);
+  }, function (err) {
+    errorCallback(res, err);
+  });
 });
 
 module.exports = router;
