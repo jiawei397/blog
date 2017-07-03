@@ -83,7 +83,7 @@ router.post('/update/:id', function (req, res, next) {
  */
 router.post('/delete', function (req, res, next) {
   console.log(req.body);
-  LanguageModel.delLanguageByIds(req.body.ids, function () {
+  LanguageModel.delLanguageByIds(req.body.ids, function (data) {
     res.json({
       success: true,
       data: []
@@ -128,7 +128,7 @@ router.post('/export', function (req, res, next) {
   var path = "public/data/temp.json";
   var datas = req.body;
   datas = R.project(['code', 'zh', 'en'])(datas);
-  fs.writeFile(path, util.stringify(datas, null, 2), function (err, data) {
+  fs.writeFile(path, JSON.stringify(datas), function (err, data) {
     if (err) {
       errorCallback(res, err);
     } else {
@@ -148,8 +148,8 @@ router.post('/export', function (req, res, next) {
 router.post('/import', function (req, res, next) {
   var form = new multiparty.Form();
   form.parse(req, function (err, fields, files) {
-    console.log(fields);
-    console.log(files);
+    // console.log(fields);
+    // console.log(files);
     fs.readFile(files.file[0].path, function (err, data) {
       if (!data || err) {
         errorCallback(res, err);
@@ -157,12 +157,11 @@ router.post('/import', function (req, res, next) {
       }
       // var fileName = files.file[0].originalFilename;
       try {
-        data = JSON.parse(data);//TODO json格式，明天研究一下导出的文件为什么导不进去
+        data = JSON.parse(data);
       } catch (e) {
         errorCallback(res, "格式有误！");
         return;
       }
-      // console.log(data);
       // console.log(data);
       if (!Array.isArray(data)) {
         errorCallback(res, "内容有误！不是数组格式！");
@@ -175,13 +174,19 @@ router.post('/import', function (req, res, next) {
       if (!b) {
         errorCallback(res, "内容有误！");
       } else {
+        data = data.map(function (obj) {
+          obj.author = req.session.user.name;
+          obj.createTime = obj.modifyTime = new Date();
+          return obj;
+        });
+        console.log(data);
         LanguageModel.create(data, function (result) {
           res.json({
             "data": [result],
             "success": true
           });
-        }, function (result) {
-          res.json(result);
+        }, function (err) {
+          errorCallback(res, err);
         });
       }
     });

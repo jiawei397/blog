@@ -10,5 +10,5 @@ module.exports = {
         maxAge: 2592000000
     },
     uploadDir:path.join(__dirname, '../public/img'),// 上传文件目录
-    mongodb: 'mongodb://localhost:27018/myblog'
+    mongodb: 'mongodb://127.0.0.1:27018/myblog'
 };

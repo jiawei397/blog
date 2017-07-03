@@ -1,3 +1,10 @@
+String.prototype.endsWith = function (k) {
+  return this.substring(this.length - k.length) == k;
+};
+String.prototype.startsWith = function (k) {
+  return this.substring(0, k.length) == k;
+};
+
 $(function () {
   var editor = new $.fn.dataTable.Editor({
     ajax: function (method, url, data, success, error) {
@@ -12,7 +19,7 @@ $(function () {
       }
       console.log(params);
       if (type == "create") {
-        if(!params["code"] || params["code"] == ""){
+        if (!params["code"] || params["code"] == "") {
           error("code不能为空");
           return;
         }
@@ -104,7 +111,8 @@ $(function () {
   });
 
   $('#example').on('click', 'tbody td:not(:first-child)', function (e) {
-    if ($(this).index() < 6) {
+    console.log($(this));
+    if ($(this).index() < 6 && $(this).index() > 1) {
       editor.bubble(this);
     }
   });
@@ -149,23 +157,31 @@ $(function () {
 //          editField: ['first_name', 'last_name']
 //        },
       {data: "code"},
-      {data: "zh"},
-      {data: "en"},
-      {data: "author",
-        width:50,
-        render: function (data, type, row) {
-            if(!data || data == ""){
-              return "admin";
-            }
-           return data;
-         }
+      {
+        data: "zh",
+        defaultContent: ""
       },
-      {data: "createTime",width:150},
-      {data: "modifyTime",width:150}
+      {
+        data: "en",
+        defaultContent: ""
+      },
+      {
+        data: "author",
+        width: 50,
+        defaultContent: "admin"
+        // render: function (data, type, row) {
+        //   if (!data || data == "") {
+        //     return "admin";
+        //   }
+        //   return data;
+        // }
+      },
+      {data: "createTime", width: 150},
+      {data: "modifyTime", width: 150}
       , {
         data: null,
         defaultContent: '<a href="#" class="remove">删除</a>',
-        width:30,
+        width: 30,
         orderable: false
       }
 //        {data: "salary", render: $.fn.dataTable.render.number(',', '.', 0, '$')}
