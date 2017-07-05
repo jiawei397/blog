@@ -1,15 +1,17 @@
 <%- include('header') %>
 <script src="/js/spider.js"></script>
-<div class="eight wide column">
+<div class="spider ui center aligned basic segment">
   <div class="ui segment">
-    <h3>复制下面内容到以下位置</h3>
-    <pre><%= windowDest %></pre>
-    <pre><%= linuxDest %></pre>
-    <pre id="spiderData">
-    <% datas.forEach(function (data) { %>
-    <%- data %>
-    <% }) %>
-    </pre>
+    <h3 class="ui dividing header">复制下面内容到以下位置</h3>
+    <div class="ui comment">
+      <div class="ui ignored info message"><%= windowDest %></div>
+      <div class="ui ignored info message"><%= linuxDest %></div>
+      <pre id="spiderData">
+        <% datas.forEach(function (data) { %>
+        <%- data %>
+        <% }) %>
+      </pre>
+    </div>
   </div>
   <div class="ui center aligned basic segment">
     <div id="addBtn" class="ui green ok inverted button">

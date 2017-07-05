@@ -93,3 +93,18 @@ textarea{
   width: 100%;
   height: 500px;
 }
+
+.spider .segment pre {
+  background-color: transparent;
+  margin: 0em;
+  padding: 0em;
+}
+.spider .segment pre .code {
+  margin: 0em;
+  padding: 0em;
+  max-height: 610px;
+  font-weight: normal;
+  transform: rotateZ(0deg);
+  -ms-transform: none !important;
+  font-family:  'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
+}
