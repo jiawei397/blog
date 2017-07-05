@@ -10,7 +10,9 @@
     "dist": "cross-env NODE_ENV=production pm2 start index.js --node-args='--harmony' --name 'blog'",
     "inspector": "node-inspector --web-port=80",
     "stop": "pm2 stop 'blog'",
-    "start": "pm2 start process.json"
+    "start": "pm2 start index.js --node-args='--harmony' --name 'blog'",
+    "start-process": "pm2 start process.json",
+    "stop-process": "pm2 stop process.json"
   },
   "dependencies": {
     "body-parser": "~1.17.2",
