@@ -9,6 +9,7 @@ module.exports = function (app) {
   });
 
   app.use('/table', require('./table'));//table必须放前面，因为bodyParser功能会与formidable冲突
+  app.use('/spider', require('./spider'));
 
   // 处理表单及文件上传的中间件
   app.use(require('express-formidable')({
@@ -19,7 +20,6 @@ module.exports = function (app) {
   app.use('/signin', require('./signin'));
   app.use('/signout', require('./signout'));
   app.use('/posts', require('./posts'));
-  app.use('/spider', require('./spider'));
 
   // 404 page
   app.use(function (req, res) {

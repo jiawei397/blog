@@ -286,12 +286,11 @@ $(function () {
                   $('#goto').attr('href', json.path);
                   $('#goto').get(0).click();
                 } else {
-                  error(json);
                   $.alert(json.message);
                 }
               },
               error: function (err) {
-                error(err);
+                $.alert(err.message);
               }
             });
           } else {
