@@ -167,7 +167,7 @@ $(function () {
       },
       {
         data: "author",
-        width: 50,
+        width: 70,
         defaultContent: "admin"
         // render: function (data, type, row) {
         //   if (!data || data == "") {

@@ -48,13 +48,13 @@ router.post('/add', function (req, res, next) {
   var obj = req.body;
   obj.author = req.session.user.name;
   obj.createTime = obj.modifyTime = new Date();
-  LanguageModel.create(obj, function (result) {
+  LanguageModel.create(obj).then(function (result) {
     res.json({
       "data": [result],
       "success": true
     });
     next();
-  }, function (err) {
+  }).catch(function (err) {
     errorCallback(res, err);
   });
 });
@@ -65,13 +65,14 @@ router.post('/add', function (req, res, next) {
  * @date 2017-06-19
  */
 router.post('/update/:id', function (req, res, next) {
-  LanguageModel.updateLanguageById(req.params.id, req.body, function (result) {
+  LanguageModel.updateLanguageById(req.params.id, req.body).then(function (result) {
+    util.combine(result, req.body);
     res.json({
       "data": [result],
       "success": true
     });
     next();
-  }, function (err) {
+  }).catch(function (err) {
     errorCallback(res, err);
   });
 });
@@ -82,14 +83,14 @@ router.post('/update/:id', function (req, res, next) {
  * @date 2017-06-19
  */
 router.post('/delete', function (req, res, next) {
-  console.log(req.body);
-  LanguageModel.delLanguageByIds(req.body.ids, function (data) {
+  // console.log(req.body);
+  LanguageModel.delLanguageByIds(req.body.ids).then(function (data) {
     res.json({
       success: true,
       data: []
     });
     next();
-  }, function (err) {
+  }).catch(function (err) {
     errorCallback(res, err);
   });
 });
@@ -104,17 +105,16 @@ router.get('/exportAll', function (req, res, next) {
   if (req.query.search) {
     config.search = decodeURI(req.query.search);
   }
-  LanguageModel.getAllDatas(config, function (datas) {
+  LanguageModel.getAllDatas(config).then(function (datas) {
     //设置响应内容类型为文件流,浏览器端表现为下载文件
     res.contentType("application/octet-stream");
     //设置文件名，注意名称需要进行url编码
-    res.setHeader("Content-Disposition", "attachment;filename=" + encodeURI("test.json"));
+    res.setHeader("Content-Disposition", "attachment;filename=" + encodeURI("dcv-all.json"));
     datas = R.project(['code', 'zh', 'en'])(datas);
     //结束本次请求，输出文件流
-    res.end(util.stringify(datas, null, 2));
-
+    res.end(JSON.stringify(datas));
     next();
-  }, function (err) {
+  }).catch(function (err) {
     errorCallback(res, err);
   });
 });
@@ -159,7 +159,7 @@ router.post('/import', function (req, res, next) {
       try {
         data = JSON.parse(data);
       } catch (e) {
-        errorCallback(res, "格式有误！");
+        errorCallback(res, "json格式有误！");
         return;
       }
       // console.log(data);
@@ -180,12 +180,12 @@ router.post('/import', function (req, res, next) {
           return obj;
         });
         console.log(data);
-        LanguageModel.create(data, function (result) {
+        LanguageModel.create(data).then(function (result) {
           res.json({
             "data": [result],
             "success": true
           });
-        }, function (err) {
+        }).catch(function (err) {
           errorCallback(res, err);
         });
       }
@@ -203,7 +203,8 @@ router.get('/getData', function (req, res, next) {
   LanguageModel.getDatas({
     start: req.query.start,
     pageSize: req.query.length,
-    search: req.query.search.value
+    search: req.query.search.value,
+    sortParams:{"modifyTime":-1,"createTime":-1}//降序
   }, function (result) {
     result.draw = req.query.draw;
     var datas = result.data;
