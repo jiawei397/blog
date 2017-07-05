@@ -2,4 +2,8 @@ node-inspector --web-port=80
 
 http://192.168.10.197/debug?port=5858
 
+爬虫原例地址：
 http://www.cnblogs.com/weidiao/p/6376420.html
+
+mongoClient的API地址：
+http://mongodb.github.io/node-mongodb-native/2.0/api/
