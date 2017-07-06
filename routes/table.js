@@ -148,6 +148,10 @@ router.post('/export', function (req, res, next) {
 router.post('/import', function (req, res, next) {
   var form = new multiparty.Form();
   form.parse(req, function (err, fields, files) {
+    if (err){
+      errorCallback(res, err);
+      return;
+    }
     // console.log(fields);
     // console.log(files);
     fs.readFile(files.file[0].path, function (err, data) {
@@ -204,18 +208,23 @@ router.get('/getData', function (req, res, next) {
     start: req.query.start,
     pageSize: req.query.length,
     search: req.query.search.value,
-    sortParams:{"modifyTime":-1,"createTime":-1}//降序
-  }, function (result) {
-    result.draw = req.query.draw;
-    var datas = result.data;
+    sortParams: {"modifyTime": -1, "createTime": -1}//降序
+  }).then(function ($page) {
+    var json = {
+      'recordsTotal': $page.count,
+      'recordsFiltered': $page.count,
+      'data': $page.results,
+      'draw': req.query.draw
+    };
+    var datas = json.data;
     datas = datas.map(function (data) {
       data.DT_RowId = data._id;
       data.createTime && (data.createTime = data.createTime.format('yyyy-MM-dd HH:mm:ss'));
       data.modifyTime && (data.modifyTime = data.modifyTime.format('yyyy-MM-dd HH:mm:ss'));
     });
-    res.json(result);
+    res.json(json);
     next();
-  }, function (err) {
+  }).catch(function (err) {
     errorCallback(res, err);
   });
 });
