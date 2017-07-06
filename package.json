@@ -9,8 +9,8 @@
     "debug": "supervisor --debug --harmony index",
     "dist": "cross-env NODE_ENV=production pm2 start index.js --node-args='--harmony' --name 'blog'",
     "inspector": "node-inspector --web-port=80",
-    "stop": "pm2 stop 'blog'",
     "start": "pm2 start index.js --node-args='--harmony' --name 'blog'",
+    "stop": "pm2 stop 'blog'",
     "start-process": "pm2 start process.json",
     "stop-process": "pm2 stop process.json"
   },
@@ -39,6 +39,7 @@
     "multiparty": "^4.1.3",
     "objectid-to-timestamp": "^1.3.0",
     "opn": "^4.0.2",
+    "pm2": "^2.5.0",
     "ramda": "^0.24.1",
     "request": "^2.81.0",
     "serve-favicon": "~2.3.0",
