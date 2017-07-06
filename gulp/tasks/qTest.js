@@ -6,14 +6,13 @@ var fs = require('fs');
 var Q = require('q');
 var request = require('request');
 
-
 /**
  * 将异步方法当做参数传入
  * 传递一个function，返回一个promise，调用then得到方法的返回值
  */
 gulp.task('nfcall', function () {
-  var ver = 'uinv.language.version = ' + new Date().getTime() + ";";
-  return Q.nfcall(fs.writeFile, './public/data/version.js', ver, "utf8").then(function () {
+  var ver = 'uinv.language.version = ' + new Date().getTime() + ';';
+  return Q.nfcall(fs.writeFile, './public/data/version.js', ver, 'utf8').then(function () {
     console.log('写入完成');
   });
 });
@@ -24,8 +23,8 @@ gulp.task('nfcall', function () {
  */
 gulp.task('denodeify', function () {
   var wf = Q.denodeify(fs.writeFile);
-  var ver = 'uinv.language.version = ' + new Date().getTime() + ";";
-  return wf('./public/data/version.js', ver, "utf8").then(function () {
+  var ver = 'uinv.language.version = ' + new Date().getTime() + ';';
+  return wf('./public/data/version.js', ver, 'utf8').then(function () {
     console.log('写入完成');
   });
 });
@@ -36,8 +35,8 @@ gulp.task('denodeify', function () {
  */
 gulp.task('defer', function () {
   var deferred = Q.defer();
-  var ver = 'uinv.language.version = ' + new Date().getTime() + ";";
-  fs.writeFile('./public/data/version.js', ver, "utf8", function (err, result) {
+  var ver = 'uinv.language.version = ' + new Date().getTime() + ';';
+  fs.writeFile('./public/data/version.js', ver, 'utf8', function (err, result) {
     if (err) {
       deferred.reject(new Error(err));
       return;
@@ -50,15 +49,15 @@ gulp.task('defer', function () {
 /**
  * promise方法
  */
-function requestUrl(url) {
+function requestUrl (url) {
   return Q.Promise(function (resolve, reject, notify) {
     request(url, function (error, response, body) {
-      if (error)
+      if (error) {
         reject(error);
-      if (!error && response.statusCode == 200) {
+      } else if (response.statusCode == 200) {
         resolve(body);
       }
-    })
+    });
   });
 }
 
@@ -73,7 +72,7 @@ gulp.task('request', function () {
   });
 });
 
-function myDelay(ms) { // 定义延时操作，返回promise
+function myDelay (ms) { // 定义延时操作，返回promise
   var deferred = Q.defer();
   setTimeout(deferred.resolve, ms);
   // deferred.reject('hahaha');
@@ -91,7 +90,7 @@ gulp.task('delay', function () {
   });
 });
 
-function myInterval(ms, fn) { // 定义延时操作，返回promise
+function myInterval (ms, fn) { // 定义延时操作，返回promise
   var deferred = Q.defer();
   var num = 0;
   var inter = setInterval(function () {
@@ -124,6 +123,3 @@ gulp.task('interval', function () {
     console.error(err);
   });
 });
-
-
-

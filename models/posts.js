@@ -42,12 +42,12 @@ Post.plugin('contentToHtml', {
 
 module.exports = {
     // 创建一篇文章
-    create: function create(post) {
+    create: function create (post) {
         return Post.create(post).exec();
     },
 
     // 通过文章 id 获取一篇文章
-    getPostById: function getPostById(postId) {
+    getPostById: function getPostById (postId) {
         return Post
             .findOne({ _id: postId })
             .populate({ path: 'author', model: 'User' })
@@ -57,7 +57,7 @@ module.exports = {
     },
 
     // 按创建时间降序获取所有用户文章或者某个特定用户的所有文章
-    getPosts: function getPosts(author) {
+    getPosts: function getPosts (author) {
         var query = {};
         if (author) {
             query.author = author;
@@ -72,14 +72,14 @@ module.exports = {
     },
 
     // 通过文章 id 给 pv 加 1
-    incPv: function incPv(postId) {
+    incPv: function incPv (postId) {
         return Post
             .update({ _id: postId }, { $inc: { pv: 1 } })
             .exec();
     },
 
     // 通过文章 id 获取一篇原生文章（编辑文章）
-    getRawPostById: function getRawPostById(postId) {
+    getRawPostById: function getRawPostById (postId) {
         return Post
             .findOne({ _id: postId })
             .populate({ path: 'author', model: 'User' })
@@ -87,7 +87,7 @@ module.exports = {
     },
 
 // 通过用户 id 和文章 id 更新一篇文章
-    updatePostById: function updatePostById(postId, author, data) {
+    updatePostById: function updatePostById (postId, author, data) {
         return Post.update({ author: author, _id: postId }, { $set: data }).exec();
     },
 
@@ -95,7 +95,7 @@ module.exports = {
 //     delPostById: function delPostById(postId, author) {
 //         return Post.remove({ author: author, _id: postId }).exec();
 //     }
-    delPostById: function delPostById(postId, author) {
+    delPostById: function delPostById (postId, author) {
         return Post.remove({ author: author, _id: postId })
             .exec()
             .then(function (res) {

@@ -17,7 +17,7 @@ router.use(bodyParser.json());
 
 // GET /spider 登录页
 router.get('/', checkLogin, function (req, res, next) {
-  var render = function (res,data) {
+  var render = function (res, data) {
     res.render('spider', {
       windowDest: "windows " + windowDest,
       linuxDest: "linux /private/etc/hosts",
@@ -41,17 +41,16 @@ router.get('/', checkLogin, function (req, res, next) {
           });
           SpiderModel.create(arr).then(function (result) {
             console.log(result);
-            render(res,datas);
+            render(res, datas);
           }).catch(next);
         })
         .catch(next);
-    }else{
+    } else {
       var ips = R.pluck('ip')(data);
       // console.log(ips);
-      render(res,ips);
+      render(res, ips);
     }
   }).catch(next);
-
 });
 
 /**

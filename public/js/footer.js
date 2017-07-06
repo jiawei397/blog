@@ -8,6 +8,6 @@ $(function () {
   $('.post-content .avatar').popup({
     inline: true,
     position: 'bottom right',
-    lastResort: 'bottom right',
+    lastResort: 'bottom right'
   });
 });

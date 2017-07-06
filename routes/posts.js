@@ -88,8 +88,8 @@ router.get('/:postId', function (req, res, next) {
   var postId = req.params.postId;
   console.log("postId:" + postId);
   Promise.all([
-    PostModel.getPostById(postId),// 获取文章信息
-    CommentModel.getComments(postId),// 获取该文章所有留言
+    PostModel.getPostById(postId), // 获取文章信息
+    CommentModel.getComments(postId), // 获取该文章所有留言
     PostModel.incPv(postId)// pv 加 1
   ]).then(function (result) {
     var post = result[0];
@@ -103,7 +103,6 @@ router.get('/:postId', function (req, res, next) {
     });
   }).catch(next);
 });
-
 
 // GET /posts/:postId/edit 更新文章页
 // router.get('/:postId/edit', checkLogin, function(req, res, next) {
@@ -119,7 +118,6 @@ router.get('/:postId', function (req, res, next) {
 // router.get('/:postId/remove', checkLogin, function(req, res, next) {
 //     res.send(req.flash());
 // });
-
 
 // GET /posts/:postId/edit 更新文章页
 router.get('/:postId/edit', checkLogin, function (req, res, next) {

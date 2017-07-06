@@ -3,7 +3,7 @@
  */
 ;
 $(function () {
-  $.modal = function () {
+  $.modal = (function () {
     var reg = new RegExp("\\[([^\\[\\]]*?)\\]", 'igm');
     var alr = $("#blog-alert");
     var ahtml = alr.html();
@@ -47,10 +47,10 @@ $(function () {
         on: function (callback) {
           if (callback && callback instanceof Function) {
             alr.find('.ok').click(function () {
-              callback(true)
+              callback(true);
             });
             alr.find('.cancel').click(function () {
-              callback(false)
+              callback(false);
             });
           }
         }
@@ -84,9 +84,8 @@ $(function () {
     return {
       alert: _alert,
       confirm: _confirm
-    }
-
-  }();
+    };
+  }());
 
   $.alert = function (msg) {
     $.modal.alert({

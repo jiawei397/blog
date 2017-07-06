@@ -5,12 +5,12 @@ $(function () {
       return ip.trim();
     });
     data = data.filter(function (ip) {
-      return ip.trim()!="";
+      return ip.trim() != "";
     });
     $.ajax({
       type: "POST",
       url: "/spider/add",
-      data: JSON.stringify({ips:data}),
+      data: JSON.stringify({ips: data}),
       contentType: "application/json; charset=utf-8",
       dataType: "json",
       success: function (json) {

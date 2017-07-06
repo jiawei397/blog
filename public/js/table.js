@@ -61,7 +61,7 @@ $(function () {
             console.error(err);
           }
         });
-      } else if (type == "remove") {//remove
+      } else if (type == "remove") { //remove
         params = {
           "ids": ids
         };
@@ -122,8 +122,9 @@ $(function () {
       .title('Delete row')
       .message('Are you sure you wish to delete this row?')
       .buttons({
-        "label": "Delete", "fn": function () {
-          editor.submit()
+        "label": "Delete",
+"fn": function () {
+          editor.submit();
         }
       })
       .remove($(this).closest('tr'));
@@ -135,12 +136,12 @@ $(function () {
       url: '/data/Chinese.json'
     },
     ajax: "/table/getData",
-    processing: true,//后台分页
+    processing: true, //后台分页
     serverSide: true,
     // deferLoading: 57,
     // ajax: "/data/test.json",
-    pageLength: 15,//默认是10
-    pagingType: "numbers",//numbers,simple,simple_numbers,full,full_numbers,first_last_numbers
+    pageLength: 15, //默认是10
+    pagingType: "numbers", //numbers,simple,simple_numbers,full,full_numbers,first_last_numbers
     columns: [
       {
         data: null,
@@ -177,8 +178,8 @@ $(function () {
         // }
       },
       {data: "createTime", width: 150},
-      {data: "modifyTime", width: 150}
-      , {
+      {data: "modifyTime", width: 150},
+       {
         data: null,
         defaultContent: '<a href="#" class="remove">删除</a>',
         width: 30,
@@ -249,9 +250,7 @@ $(function () {
                 $("#form")[0].reset();
               }
             });
-
           });
-
         },
         action: function (e, dt, node, config) {
           $('#impModal').modal('show');

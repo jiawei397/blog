@@ -2,7 +2,7 @@ module.exports = {
   root: true,
   parser: 'babel-eslint',
   parserOptions: {
-    // "ecmaVersion": 6, //指定ECMAScript支持的版本，6为ES6
+    "ecmaVersion": 6, //指定ECMAScript支持的版本，6为ES6
     // "ecmaFeatures": {
     //   "jsx": true//启动JSX
     // },

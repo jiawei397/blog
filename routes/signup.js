@@ -8,19 +8,19 @@ var UserModel = require('../models/users');
 var checkNotLogin = require('../middlewares/check').checkNotLogin;
 
 // GET /signup 注册页
-router.get('/', checkNotLogin, function(req, res, next) {
+router.get('/', checkNotLogin, function (req, res, next) {
     res.render('signup');
 });
 
 // POST /signup 用户注册
-router.post('/', checkNotLogin, function(req, res, next) {
+router.post('/', checkNotLogin, function (req, res, next) {
     // var name = req.fields.name;
     // var gender = req.fields.gender;
     // var bio = req.fields.bio;
     // var password = req.fields.password;
     // var repassword = req.fields.repassword;
     var avatar = req.files.avatar.path.split(path.sep).pop();
-    var {name,gender,bio,password,repassword} = req.fields;
+    var {name, gender, bio, password, repassword} = req.fields;
 
     // 校验参数
     try {

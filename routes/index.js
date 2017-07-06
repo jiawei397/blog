@@ -13,7 +13,7 @@ module.exports = function (app) {
 
   // 处理表单及文件上传的中间件
   app.use(require('express-formidable')({
-    uploadDir: config.uploadDir,// 上传文件目录
+    uploadDir: config.uploadDir, // 上传文件目录
     keepExtensions: true// 保留后缀
   }));
   app.use('/signup', require('./signup'));
