@@ -10,6 +10,7 @@ var Q = require("q");
 var dataConfig = require('../config/data');
 var stripDebug = require('gulp-strip-debug'); // 仅用于本例做演示
 var del = require('del');
+var gzip = require('../plugins/myGzip');
 var vinylPaths = require('vinyl-paths');
 var minimist = require('minimist');
 var merge = require('merge-stream');
@@ -225,4 +226,13 @@ gulp.task('merge', function () {
     .pipe(gulp.dest('dist/test'));
 
   return merge(tmp, test);
+});
+
+gulp.task('gzip', function () {
+  return gulp.src('dist/js/*.js')
+    .pipe(gzip({
+      skipGrowingFiles: true,
+      suffix: 'gzjs'
+    }))
+    .pipe(gulp.dest('static'));
 });
