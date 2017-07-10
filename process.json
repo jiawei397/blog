@@ -4,7 +4,10 @@
     "script": "index.js",
     "node_args": "-harmony",
     "watch": true,
-    "log_date_format": "YYYY - MM - DD HH: mm Z"
+    "log_date_format": "YYYY - MM - DD HH: mm Z",
+    "env": {
+      "NODE_ENV": "dev"
+    }
   },{
     "name": "blog2",
     "script": "index.js",

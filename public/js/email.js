@@ -63,6 +63,8 @@ $(function () {
         success: function (json) {
           if (json.success) {
             $.alert('发送邮件成功！');
+            $("input[name='theme']").val("");
+            $("textarea[name='content']").val("");
           } else {
             $.alert(json.message);
           }

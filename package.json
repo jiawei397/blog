@@ -10,7 +10,7 @@
     "debug": "supervisor --debug --harmony index",
     "dist": "cross-env NODE_ENV=production pm2 start index.js --node-args='--harmony' --name 'blog'",
     "inspector": "node-inspector --web-port=80",
-    "start": "pm2 start index.js --node-args='--harmony' --name 'blog'",
+    "start": "cross-env NODE_ENV=dev pm2 start index.js --node-args='--harmony' --name 'blog'",
     "stop": "pm2 stop 'blog'",
     "start-process": "pm2 start process.json",
     "stop-process": "pm2 stop process.json"
