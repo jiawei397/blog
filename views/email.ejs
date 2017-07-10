@@ -1,0 +1,19 @@
+<%- include('header') %>
+<script src="/js/email.js"></script>
+<div class="ui form">
+  <div class="required inline field">
+    <label>收件人</label>
+    <input name="email" type="text">
+  </div>
+  <div class="required inline field">
+    <label>主题</label>
+    <input name="theme" type="text">
+  </div>
+  <div class="required field">
+    <label>内容</label>
+    <textarea name="content"></textarea>
+  </div>
+  <div id="sendBt" class="ui submit button">发送</div>
+  <div class="ui error message"></div>
+</div>
+<%- include('footer') %>

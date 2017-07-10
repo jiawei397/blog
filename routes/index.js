@@ -10,6 +10,7 @@ module.exports = function (app) {
 
   app.use('/table', require('./table'));//table必须放前面，因为bodyParser功能会与formidable冲突
   app.use('/spider', require('./spider'));
+  app.use('/email', require('./email'));
 
   // 处理表单及文件上传的中间件
   app.use(require('express-formidable')({

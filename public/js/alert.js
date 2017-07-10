@@ -8,15 +8,6 @@ $(function () {
     var alr = $("#blog-alert");
     var ahtml = alr.html();
 
-    //关闭时恢复 modal html 原样，供下次调用时 replace 用
-    //var _init = function () {
-    //	alr.on("hidden.bs.modal", function (e) {
-    //		$(this).html(ahtml);
-    //	});
-    //}();
-
-    /* html 复原不在 _init() 里面做了，重复调用时会有问题，直接在 _alert/_confirm 里面做 */
-
     var _alert = function (options) {
       alr.html(ahtml);	// 复原
       alr.find('.cancel').hide();
@@ -30,7 +21,7 @@ $(function () {
         on: function (callback) {
           if (callback && callback instanceof Function) {
             alr.find('.ok').click(function () {
-              callback(true);
+              callback(null, true);
             });
           }
         }
@@ -47,10 +38,10 @@ $(function () {
         on: function (callback) {
           if (callback && callback instanceof Function) {
             alr.find('.ok').click(function () {
-              callback(true);
+              callback(null, true);
             });
             alr.find('.cancel').click(function () {
-              callback(false);
+              callback(null, false);
             });
           }
         }
@@ -87,8 +78,16 @@ $(function () {
     };
   }());
 
+  //回调使用方法：$.alert("XX").on(function(){err,bool});
   $.alert = function (msg) {
-    $.modal.alert({
+    return $.modal.alert({
+      msg: msg
+    });
+  };
+
+  //回调使用方法：$.confirm("XX").on(function(){err,bool});
+  $.confirm = function (msg) {
+    return $.modal.confirm({
       msg: msg
     });
   };
