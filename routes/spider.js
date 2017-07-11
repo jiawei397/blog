@@ -9,11 +9,8 @@ var checkLogin = require('../middlewares/check').checkLogin;
 var windowDest = "C:\\Windows\\System32\\drivers\\etc\\hosts";
 var SpiderModel = require('../models/spider');
 var R = require("ramda");
-var bodyParser = require('body-parser');
-var logger = require('morgan');
-router.use(logger('dev'));
-router.use(bodyParser.urlencoded({extended: false}));
-router.use(bodyParser.json());
+var util = require('../lib/util');
+util.bodyParser(router);
 
 // GET /spider 登录页
 router.get('/', checkLogin, function (req, res, next) {

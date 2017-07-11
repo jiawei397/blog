@@ -4,8 +4,6 @@
 var express = require('express');
 var router = express.Router();
 var checkLogin = require('../middlewares/check').checkLogin;
-var bodyParser = require('body-parser');
-var logger = require('morgan');
 var LanguageModel = require('../models/languages');
 var fs = require('fs');
 var util = require('../lib/util');
@@ -17,10 +15,7 @@ var errorCallback = function (res, err) {
   res.json({"success": false, "message": err.message || err});
 };
 
-router.use(logger('dev'));
-router.use(bodyParser.urlencoded({extended: false}));
-router.use(bodyParser.json());
-
+util.bodyParser(router);
 router.use(checkLogin);//jw 2017.06.28 这样，这个路由的所有方法，都要求登陆才能调用
 
 //一个简单的路由访问日志记录器
@@ -46,6 +41,7 @@ router.get('/', function (req, res, next) {
  */
 router.post('/add', function (req, res, next) {
   var obj = req.body;
+  console.log(obj);
   obj.author = req.session.user.name;
   obj.createTime = obj.modifyTime = new Date();
   LanguageModel.create(obj).then(function (result) {
@@ -217,7 +213,7 @@ router.get('/getData', function (req, res, next) {
       'draw': req.query.draw
     };
     var datas = json.data;
-    datas = datas.map(function (data) {
+    datas.map(function (data) {
       data.DT_RowId = data._id;
       data.createTime && (data.createTime = data.createTime.format('yyyy-MM-dd HH:mm:ss'));
       data.modifyTime && (data.modifyTime = data.modifyTime.format('yyyy-MM-dd HH:mm:ss'));

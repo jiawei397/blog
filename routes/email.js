@@ -3,14 +3,10 @@
  */
 var express = require('express');
 var router = express.Router();
-var fs = require('fs');
 var sendMail = require('../lib/mail');
 var checkLogin = require('../middlewares/check').checkLogin;
-var bodyParser = require('body-parser');
-var logger = require('morgan');
-router.use(logger('dev'));
-router.use(bodyParser.urlencoded({extended: false}));
-router.use(bodyParser.json());
+var util = require('../lib/util');
+util.bodyParser(router);
 
 // GET /spider 登录页
 router.get('/', checkLogin, function (req, res, next) {
