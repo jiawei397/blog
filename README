@@ -10,3 +10,18 @@ http://mongodb.github.io/node-mongodb-native/2.0/api/
 
 JX打包
 http://www.cnblogs.com/mfc-itblog/p/5386885.html
+
+####mockjs#####
+# 安装
+npm install -g bower
+bower install --save mockjs
+
+# 全局安装
+$ npm install mockjs -g
+
+# 执行
+$ random url
+# => http://rmcpx.org/funzwc
+
+# 帮助
+random -h
