@@ -1,0 +1,24 @@
+<%- include('header') %>
+<script src="http://api.map.baidu.com/api?v=2.0&ak=iVCI9TFfsmCFuSRc30LcPVAPUN2Sadu4"></script>
+<script src="http://api.map.baidu.com/library/RectangleZoom/1.2/src/RectangleZoom_min.js"></script>
+<div id="l-map"></div>
+<div id="driving_way" class="ui feed">
+  <div class="event">
+    <div class="ui selection dropdown">
+      <i class="dropdown icon"></i>
+      <div class="default text">最少时间</div>
+      <div class="menu">
+        <div class="item" data-value="0">最少时间</div>
+        <div class="item" data-value="1">最少换乘</div>
+        <div class="item" data-value="2">最少步行</div>
+        <div class="item" data-value="3">不乘地铁</div>
+      </div>
+    </div>
+      <div id="result" class="ui green ok inverted button">
+        <i class="checkmark icon"></i>
+        查询
+      </div>
+  </div>
+</div>
+<script src="/js/map.js"></script>
+<%- include('footer') %>

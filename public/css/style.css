@@ -108,3 +108,5 @@ textarea{
   -ms-transform: none !important;
   font-family:  'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;
 }
+
+#l-map{height:80%;width:100%;}

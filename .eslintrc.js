@@ -32,7 +32,7 @@ module.exports = {
     "no-redeclare": ["warn"],
     "no-tabs": "off",
     "no-undef": ["error", {"typeof": true}],
-    "no-unused-vars": ["error", {"vars": "all", "args": "none", "ignoreRestSiblings": false,"varsIgnorePattern":"[initCB_|itemClickCB_|sst]"}],
+    "no-unused-vars": ["error", {"vars": "all", "args": "none", "ignoreRestSiblings": false,"varsIgnorePattern":"[BMAP_]"}],
     "no-useless-call": "off",
     "no-useless-escape": ["warn"],
     "one-var": ["off"],
@@ -48,6 +48,12 @@ module.exports = {
     "jquery": true
   },
   "globals": {
-    "window": true
+    "window": true,
+    "BMap":true,
+    "BMapLib":true,
+    "BMAP_TRANSIT_POLICY_LEAST_TIME":true,
+    "BMAP_TRANSIT_POLICY_LEAST_TRANSFER":true,
+    "BMAP_TRANSIT_POLICY_LEAST_WALKING":true,
+    "BMAP_TRANSIT_POLICY_AVOID_SUBWAYS":true
   }
 };
