@@ -486,7 +486,7 @@ gulp.task("inject:dcControl", function () {
 });
 
 gulp.task("inject:givTMapping", function () {
-  return dev.injectImportFun("givTMapping.html", [ givmappingPluginsJsArr, givmappingAppJsArr, givmappingPluginsCssArr]);
+  return dev.injectImportFun("givTMapping.html", [givmappingPluginsJsArr, givmappingAppJsArr, givmappingPluginsCssArr]);
 });
 
 gulp.task("inject:givList", function () {

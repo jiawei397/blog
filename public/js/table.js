@@ -218,11 +218,10 @@ $(function () {
             }
             var file = formFile.files[0];
             // console.log(file);
-            var obj = {
-              fileName: formFile.name,
-              file: file
-            };
-
+            // var obj = {
+            //   fileName: formFile.name,
+            //   file: file
+            // };
             var formData = new FormData(); //构造空对象，下面用append 方法赋值。
             formData.append("fileName", formFile.name);
             formData.append("file", file);

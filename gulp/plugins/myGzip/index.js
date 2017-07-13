@@ -80,7 +80,7 @@ module.exports = function (options) {
         var directory = typeof config.deleteMode === 'string' ? config.deleteMode : config.deleteMode(file);
         var filepath = path.resolve(cwd, directory, getFixedPath(file.relative));
 
-        fs.exists(filepath, function (exists) {
+        fs.stat(filepath, function (exists) {
           if (exists) {
             gutil.log(gutil.colors.green('Gzipped file ' + filepath + ' deleted'));
             fs.unlink(filepath, complete);

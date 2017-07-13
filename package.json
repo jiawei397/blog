@@ -13,8 +13,14 @@
     "start": "cross-env NODE_ENV=dev pm2 start index.js --node-args='--harmony' --name 'blog'",
     "stop": "pm2 stop 'blog'",
     "start-process": "pm2 start process.json",
-    "stop-process": "pm2 stop process.json"
+    "stop-process": "pm2 stop process.json",
+    "eslint": "eslint ./ --cache --ignore-pattern .gitignore",
+    "precommit-msg": "echo 'Pre-commit checks...' && exit 0"
   },
+  "pre-commit": [
+    "precommit-msg",
+    "eslint"
+  ],
   "dependencies": {
     "body-parser": "~1.17.2",
     "cheerio": "^1.0.0-rc.1",
@@ -78,6 +84,7 @@
     "gulp-load-plugins": "^1.5.0",
     "gulp-sourcemaps": "^2.6.0",
     "gulp-util": "^3.0.8",
+    "pre-commit": "^1.2.2",
     "q": "^1.5.0",
     "require-dir": "^0.3.2",
     "vinyl-buffer": "^1.0.0",

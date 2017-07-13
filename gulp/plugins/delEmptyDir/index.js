@@ -29,7 +29,6 @@ function del (dir) {
 }
 
 module.exports = function (dir) {
-  var paths = [];
   return del(dir).then(function () {
     console.log('删除空文件夹成功');
   }).catch(function (err) {

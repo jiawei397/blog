@@ -48,7 +48,7 @@ module.exports = function (originalContents, options, callback) {
           callback(null, contentsAsBuffer, false);
         } else {
           convertContentsToStream(contentsAsBuffer, function (err, contentsAsStream) {
-            callback(null, contentsAsStream, false);
+            callback(err, contentsAsStream, false);
           });
         }
       return;
@@ -77,7 +77,7 @@ module.exports = function (originalContents, options, callback) {
             callback(null, compressedContentsAsBuffer, true);
           } else {
             convertContentsToStream(compressedContentsAsBuffer, function (err, compressedContentsStream) {
-              callback(null, compressedContentsStream, true);
+              callback(err, compressedContentsStream, true);
             });
           }
         }
