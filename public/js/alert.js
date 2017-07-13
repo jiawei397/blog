@@ -1,6 +1,7 @@
 /**
  * Created by Administrator on 2017/6/27 0027.
  */
+var e = "jfjaj"
 $(function () {
   $.modal = (function () {
     var reg = new RegExp("\\[([^\\[\\]]*?)\\]", 'igm');
