@@ -39,20 +39,21 @@ router.get('/', function (req, res, next) {
  * @author jw
  * @date 2017-06-19
  */
-router.post('/add', function (req, res, next) {
+router.post('/add', async function (req, res, next) {
   var obj = req.body;
   console.log(obj);
   obj.author = req.session.user.name;
   obj.createTime = obj.modifyTime = new Date();
-  LanguageModel.create(obj).then(function (result) {
+  try {
+    var result = await LanguageModel.create(obj);
     res.json({
       "data": [result],
       "success": true
     });
     next();
-  }).catch(function (err) {
+  } catch (err) {
     errorCallback(res, err);
-  });
+  }
 });
 
 /**
@@ -60,17 +61,18 @@ router.post('/add', function (req, res, next) {
  * @author jw
  * @date 2017-06-19
  */
-router.post('/update/:id', function (req, res, next) {
-  LanguageModel.updateLanguageById(req.params.id, req.body).then(function (result) {
+router.post('/update/:id', async function (req, res, next) {
+  try {
+    var result = await LanguageModel.updateLanguageById(req.params.id, req.body);
     util.combine(result, req.body);
     res.json({
       "data": [result],
       "success": true
     });
     next();
-  }).catch(function (err) {
+  } catch (err) {
     errorCallback(res, err);
-  });
+  }
 });
 
 /**
@@ -78,17 +80,18 @@ router.post('/update/:id', function (req, res, next) {
  * @author jw
  * @date 2017-06-19
  */
-router.post('/delete', function (req, res, next) {
+router.post('/delete', async function (req, res, next) {
   // console.log(req.body);
-  LanguageModel.delLanguageByIds(req.body.ids).then(function (data) {
+  try {
+    await LanguageModel.delLanguageByIds(req.body.ids);
     res.json({
       success: true,
       data: []
     });
     next();
-  }).catch(function (err) {
+  } catch (err) {
     errorCallback(res, err);
-  });
+  }
 });
 
 /**
@@ -96,12 +99,13 @@ router.post('/delete', function (req, res, next) {
  * @author jw
  * @date 2017-06-19
  */
-router.get('/exportAll', function (req, res, next) {
+router.get('/exportAll', async function (req, res, next) {
   var config = {};
   if (req.query.search) {
     config.search = decodeURI(req.query.search);
   }
-  LanguageModel.getAllDatas(config).then(function (datas) {
+  try {
+    var datas = await LanguageModel.getAllDatas(config);
     //设置响应内容类型为文件流,浏览器端表现为下载文件
     res.contentType("application/octet-stream");
     //设置文件名，注意名称需要进行url编码
@@ -110,9 +114,9 @@ router.get('/exportAll', function (req, res, next) {
     //结束本次请求，输出文件流
     res.end(JSON.stringify(datas));
     next();
-  }).catch(function (err) {
+  } catch (err) {
     errorCallback(res, err);
-  });
+  }
 });
 
 /**
@@ -144,13 +148,13 @@ router.post('/export', function (req, res, next) {
 router.post('/import', function (req, res, next) {
   var form = new multiparty.Form();
   form.parse(req, function (err, fields, files) {
-    if (err){
+    if (err) {
       errorCallback(res, err);
       return;
     }
     // console.log(fields);
     // console.log(files);
-    fs.readFile(files.file[0].path, function (err, data) {
+    fs.readFile(files.file[0].path, async function (err, data) {
       if (!data || err) {
         errorCallback(res, err);
         return;
@@ -173,21 +177,22 @@ router.post('/import', function (req, res, next) {
       // console.log(b);
       if (!b) {
         errorCallback(res, "内容有误！");
-      } else {
-        data = data.map(function (obj) {
-          obj.author = req.session.user.name;
-          obj.createTime = obj.modifyTime = new Date();
-          return obj;
+        return;
+      }
+      data = data.map(function (obj) {
+        obj.author = req.session.user.name;
+        obj.createTime = obj.modifyTime = new Date();
+        return obj;
+      });
+      console.log(data);
+      try {
+        var result = await LanguageModel.create(data);
+        res.json({
+          "data": [result],
+          "success": true
         });
-        console.log(data);
-        LanguageModel.create(data).then(function (result) {
-          res.json({
-            "data": [result],
-            "success": true
-          });
-        }).catch(function (err) {
-          errorCallback(res, err);
-        });
+      } catch (err) {
+        errorCallback(res, err);
       }
     });
   });
@@ -198,14 +203,15 @@ router.post('/import', function (req, res, next) {
  * @author jw
  * @date 2017-06-27
  */
-router.get('/getData', function (req, res, next) {
+router.get('/getData', async function (req, res, next) {
   // console.error(req.query);
-  LanguageModel.getDatas({
-    start: req.query.start,
-    pageSize: req.query.length,
-    search: req.query.search.value,
-    sortParams: {"modifyTime": -1, "createTime": -1}//降序
-  }).then(function ($page) {
+  try {
+    var $page = await LanguageModel.getDatas({
+      start: req.query.start,
+      pageSize: req.query.length,
+      search: req.query.search.value,
+      sortParams: {"modifyTime": -1, "createTime": -1}//降序
+    });
     var json = {
       'recordsTotal': $page.count,
       'recordsFiltered': $page.count,
@@ -220,9 +226,9 @@ router.get('/getData', function (req, res, next) {
     });
     res.json(json);
     next();
-  }).catch(function (err) {
+  } catch (err) {
     errorCallback(res, err);
-  });
+  }
 });
 
 module.exports = router;
