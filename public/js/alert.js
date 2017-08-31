@@ -75,7 +75,7 @@ $(function () {
       alert: _alert,
       confirm: _confirm
     };
-  }());
+  })();
 
   //回调使用方法：$.alert("XX").on(function(){err,bool});
   $.alert = function (msg) {

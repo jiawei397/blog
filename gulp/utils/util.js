@@ -54,22 +54,21 @@ var util = {
       var result = tempFun(opObjectA, isCloneObjDeep);
       fun(result, opObjectB, isDeep, false);
       return result;
-    } else {
-      for (var cur in opObjectB) {
-        if (isDeep) {
-          if (opObjectA[cur] !== undefined && opObjectA[cur] !== null
-            && !(opObjectA[cur] instanceof Array) && typeof opObjectA[cur] == "object"
-            && !(opObjectB[cur] instanceof Array) && typeof opObjectB[cur] == "object") {
-            fun(opObjectA[cur], opObjectB[cur], isDeep, false);
-          } else {
-            opObjectA[cur] = opObjectB[cur];
-          }
+    }
+    for (var cur in opObjectB) {
+      if (isDeep) {
+        if (opObjectA[cur] !== undefined && opObjectA[cur] !== null
+          && !(opObjectA[cur] instanceof Array) && typeof opObjectA[cur] == "object"
+          && !(opObjectB[cur] instanceof Array) && typeof opObjectB[cur] == "object") {
+          fun(opObjectA[cur], opObjectB[cur], isDeep, false);
         } else {
           opObjectA[cur] = opObjectB[cur];
         }
+      } else {
+        opObjectA[cur] = opObjectB[cur];
       }
-      return opObjectA;
     }
+    return opObjectA;
   }),
   /**
    * 合并对象 只会在A的基础上添加元素,不影响原有元素 返回长大了的A
@@ -86,22 +85,21 @@ var util = {
       var result = tempFun(opObjectA, isCloneObjDeep);
       fun(result, opObjectB, isDeep, false);
       return result;
-    } else {
-      for (var cur in opObjectB) {
-        if (isDeep) {
-          if (opObjectA[cur] !== undefined && opObjectA[cur] !== null
-            && !(opObjectA[cur] instanceof Array) && typeof opObjectA[cur] == "object"
-            && !(opObjectB[cur] instanceof Array) && typeof opObjectB[cur] == "object") {
-            fun(opObjectA[cur], opObjectB[cur], isDeep, false);
-          } else {
-            if (opObjectA[cur] === undefined || opObjectA[cur] === null) opObjectA[cur] = opObjectB[cur];
-          }
+    }
+    for (var cur in opObjectB) {
+      if (isDeep) {
+        if (opObjectA[cur] !== undefined && opObjectA[cur] !== null
+          && !(opObjectA[cur] instanceof Array) && typeof opObjectA[cur] == "object"
+          && !(opObjectB[cur] instanceof Array) && typeof opObjectB[cur] == "object") {
+          fun(opObjectA[cur], opObjectB[cur], isDeep, false);
         } else {
           if (opObjectA[cur] === undefined || opObjectA[cur] === null) opObjectA[cur] = opObjectB[cur];
         }
+      } else {
+        if (opObjectA[cur] === undefined || opObjectA[cur] === null) opObjectA[cur] = opObjectB[cur];
       }
-      return opObjectA;
     }
+    return opObjectA;
   })
 };
 module.exports = util;
