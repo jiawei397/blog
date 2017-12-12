@@ -1,4 +1,4 @@
-git 
+git
 --------创建key-----------
 第1步：创建SSH Key。
 在用户主目录下，看看有没有.ssh目录，如果有，再看看这个目录下有没有id_rsa和id_rsa.pub这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），创建SSH Key：
@@ -24,7 +24,7 @@ $ git commit -m "wrote a readme file"
 [master (root-commit) cb926e7] wrote a readme file
  1 file changed, 2 insertions(+)
  create mode 100644 readme.txt
- 
+
  git status命令可以让我们时刻掌握仓库当前的状态，上面的命令告诉我们，readme.txt被修改过了，但还没有准备提交的修改。
 
 
@@ -70,11 +70,11 @@ Switched to branch 'dev'
 
 合并分支：
 git merge dev
-  
+
 删除分支：
 git branch -d dev
-  
-----------标签---------------------  
+
+----------标签---------------------
 打标签：
 git tag v1.0
 
@@ -94,7 +94,7 @@ git push origin :refs/tags/v0.9
 -------------远程提交---------------
 远程提交：
 git remote add origin git@gitee.com:liaoxuefeng/learngit.git
- 
+
 如果在使用命令git remote add时报错：
 
 git remote add origin git@gitee.com:liaoxuefeng/learngit.git
@@ -147,4 +147,18 @@ github    git@github.com:michaelliao/learngit.git (push)
 git push github master
 如果要推送到码云，使用命令：
 
-git push gitee master 
+git push gitee master
+
+-------------
+让Git显示颜色，会让命令输出看起来更醒目：
+git config --global color.ui true
+
+配置别名：
+git config --global alias.st status
+
+git config --global alias.co checkout
+git config --global alias.ci commit
+git config --global alias.br branch
+git config --global alias.unstage 'reset HEAD'
+git config --global alias.last 'log -1'
+git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit"
