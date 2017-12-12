@@ -1,0 +1,63 @@
+git 
+
+第1步：创建SSH Key。
+在用户主目录下，看看有没有.ssh目录，如果有，再看看这个目录下有没有id_rsa和id_rsa.pub这两个文件，如果已经有了，可直接跳到下一步。如果没有，打开Shell（Windows下打开Git Bash），创建SSH Key：
+ssh-keygen -t rsa -C "jw397@126.com"
+
+你需要把邮件地址换成你自己的邮件地址，然后一路回车，使用默认值即可，由于这个Key也不是用于军事目的，所以也无需设置密码。
+
+如果一切顺利的话，可以在用户主目录里找到.ssh目录，里面有id_rsa和id_rsa.pub两个文件，这两个就是SSH Key的秘钥对，id_rsa是私钥，不能泄露出去，id_rsa.pub是公钥，可以放心地告诉任何人。
+
+第2步：登陆GitHub，打开“Account settings”，“SSH Keys”页面：
+
+然后，点“Add SSH Key”，填上任意Title，在Key文本框里粘贴id_rsa.pub文件的内容：
+
+----------------
+永久删除文件：
+
+git filter-branch --force --index-filter 'git rm -f  --cached --ignore-unmatch src/dcv/uGeo/gisRes/gisRes.zip' --prune-empty --tag-name-filter cat -- --all
+
+步骤二: 推送我们修改后的repo
+
+以强制覆盖的方式推送你的repo, 命令如下:
+
+git push origin master --force --all
+如果打了tag:
+git push origin master --force --tags
+
+步骤三: 清理和回收空间
+
+虽然上面我们已经删除了文件, 但是我们的repo里面仍然保留了这些objects, 等待垃圾回收(GC), 所以我们要用命令彻底清除它, 并收回空间
+
+$ rm -rf .git/refs/original/
+
+$ git reflog expire --expire=now --all
+
+$ git gc --prune=now
+
+$ git gc --aggressive --prune=now
+
+最后把改动强制推送到远端
+
+git push origin --force --all
+
+----------------
+创建并切换分支：
+$ git checkout -b dev
+
+git checkout命令加上-b参数表示创建并切换，相当于以下两条命令：
+$ git branch dev
+$ git checkout dev
+Switched to branch 'dev'
+
+用git branch命令查看当前分支：
+
+$ git branch
+
+合并分支：
+git merge dev
+  
+删除分支：
+git branch -d dev
+  
+  
