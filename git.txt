@@ -31,6 +31,7 @@ $ git commit -m "wrote a readme file"
 ----------永久删除文件-------------
 
 git filter-branch --force --index-filter 'git rm -f  --cached --ignore-unmatch src/dcv/uGeo/gisRes/gisRes.zip' --prune-empty --tag-name-filter cat -- --all
+git filter-branch --force --index-filter 'git rm --cached --ignore-unmatch src/dcv/uGeo/gisRes/gisRes.zip' --prune-empty --tag-name-filter cat -- --all
 
 步骤二: 推送我们修改后的repo
 
