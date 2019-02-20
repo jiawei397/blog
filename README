@@ -1,6 +1,10 @@
+//低版本node调试方法
 node-inspector --web-port=80
-
 http://192.168.10.197/debug?port=5858
+
+//新版本不需要
+node --inspect index.js
+//甚至直接用ide的debug更方便
 
 爬虫原例地址：
 http://www.cnblogs.com/weidiao/p/6376420.html
