@@ -3,7 +3,7 @@
  */
 var path = require('path');
 module.exports = {
-  port: 80,
+  port: 8081,
   session: {
     secret: 'myblog',
     key: 'myblog',
@@ -16,5 +16,5 @@ module.exports = {
     user: 'XX@126.com',
     pass: 'XXX'//密码，如果设置了stmp，则不是登陆密码
   },
-  mongodb: 'mongodb://127.0.0.1:27017/myblog'
+  mongodb: 'mongodb://127.0.0.1:27018/myblog'
 };

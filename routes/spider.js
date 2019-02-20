@@ -25,21 +25,23 @@ router.get('/', checkLogin, function (req, res, next) {
   SpiderModel.getDatas().then(function (data) {
     console.error("spider", data);
     if (!data || data.length == 0) {
+      var dataArr;
       spiderGithub()
         .then(function (datas) {
           console.log(datas);
           var date = new Date();
-          var arr = [];
-          datas.map(function (data) {
-            arr.push({
+          var arr = datas.map(function (data) {
+            return {
               ip: data,
               createTime: date
-            });
+            };
           });
-          SpiderModel.create(arr).then(function (result) {
-            console.log(result);
-            render(res, datas);
-          }).catch(next);
+          dataArr = datas;
+          return SpiderModel.create(arr);
+        })
+        .then(function (result) {
+          console.log(result);
+          render(res, dataArr);
         })
         .catch(next);
     } else {

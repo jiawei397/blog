@@ -44,7 +44,9 @@ router.post('/', checkNotLogin, function (req, res, next) {
         }
     } catch (e) {
         // 注册失败，异步删除上传的头像
-        fs.unlink(req.files.avatar.path);
+        fs.unlink(req.files.avatar.path, function () {
+          console.log('删除成功');
+        });
         req.flash('error', e.message);
         return res.redirect('/signup');
     }
