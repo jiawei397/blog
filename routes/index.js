@@ -23,6 +23,7 @@ module.exports = function (app) {
   app.use('/signout', require('./signout'));
   app.use('/posts', require('./posts'));
   app.use('/calendar', require('./calendar'));
+  app.use('/markdown', require('./markdown'));
 
   // 404 page
   app.use(function (req, res) {
