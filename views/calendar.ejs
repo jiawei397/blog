@@ -1,0 +1,47 @@
+<%- include('header') %>
+<script src="/plugins/laydate/laydate.js"></script>
+
+<style>
+    .calendar {
+        margin: 5px auto;
+        width: 300px;
+        height: 323px;
+    }
+</style>
+<div class="calendar"></div>
+
+<script>
+    //执行一个laydate实例
+    var ins1 = laydate.render({
+        elem: '.calendar' //指定元素
+        , show: true //直接显示
+        , position: 'static'
+        // ,position:'fixed'
+        , theme: '#393D49'
+        // ,theme: 'molv'
+        // ,theme: 'grid'
+        , calendar: true
+        // ,showBottom: false
+        , mark: {
+            '0-10-14': '生日'
+            , '0-12-31': '跨年' //每年12月31日
+            , '0-0-10': '工资' //每个月10号
+            , '2019-9-15': '中国' //具体日期
+            , '2019-9-20': '预发' //如果为空字符，则默认显示数字+徽章
+            , '2019-9-21': '发布'
+        }
+        , done: function (value, date) {
+            if (date.year === 2019 && date.month === 8 && date.date === 15) { //点击2017年8月15日，弹出提示语
+                ins1.hint('中国人民抗日战争胜利74周年');
+            }
+            alert(value)
+        }
+        , closeStop: 'body' //这里代表的意思是：点击 test1 所在元素阻止关闭事件冒泡。如果不设定，则无法弹出控件
+        // , change: function (value, date, endDate) {
+        //     // ins1.hint(value); //在控件上弹出value值
+        //     alert(value)
+        // }
+    });
+</script>
+
+<%- include('footer') %>
