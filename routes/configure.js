@@ -36,22 +36,25 @@ router.post('/add', async (req, res, next) => {
 
 /**
  * 查找数据
+ * 参数应该这样传：{key:'abc'}
  */
-router.post('/find', checkLogin, function (req, res, next) {
+router.post('/find', async (req, res, next) => {
   // let key = 'test';
-  var key = req.body;
-  ConfigureModel.getDataByKey(key).then(function (data) {
+  try {
+    let {key} = req.body;
+    // console.log(key);
+    let data = await ConfigureModel.getDataByKey(key);
     res.json({
       'success': true,
       'data': data
     });
-  }).catch((err) => {
+  } catch (err){
     console.error(err);
     res.json({
       'success': false,
-      'message': err
+      'message': err.message
     });
-  });
+  }
 });
 
 module.exports = router;

@@ -26,6 +26,10 @@ module.exports = {
   },
   createOrUpdate: async function (data) {
     let key = data.key;
+    let value = data.value;
+    if (typeof value === 'object') {
+      data.value = JSON.stringify(value);
+    }
     let val = await this.getDataByKey(key);
     if (val) {
       this.update(data);
