@@ -38,6 +38,7 @@ module.exports = {
     }
     let val = await this.getDataByKey(key);
     if (val) {
+      val.value = data.value;
       this.update(val);
     } else {
       this.create(data);
