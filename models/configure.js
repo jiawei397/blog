@@ -1,8 +1,13 @@
 var Configure = require('../lib/mongo').Configure;
+const dateFormat = require('dateformat');
+
+const now = () => {
+  return dateFormat(new Date(), 'yyyymmdd HH:MM:ss');
+};
 
 module.exports = {
   create: function (data) {
-    data.createTime = data.modifyTime = new Date();
+    data.createTime = data.modifyTime = now();
     data.version = 1;
     return Configure.insert(data).exec();
   },
@@ -21,7 +26,8 @@ module.exports = {
   },
   // 更新一行数据
   update: function (data) {
-    data.modifyTime = new Date();
+    data.modifyTime = now();
+    data.createTime = now();
     if (!data.version) {
       data.version = 1;
     } else {
@@ -32,6 +38,12 @@ module.exports = {
   },
   createOrUpdate: async function (data) {
     let key = data.key;
+    if (!key) {
+      return {
+        success: false,
+        message: 'key不能为空'
+      };
+    }
     let value = data.value;
     if (typeof value === 'object') {
       data.value = JSON.stringify(value);
