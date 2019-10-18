@@ -20,12 +20,18 @@ router.post('/add', async (req, res, next) => {
   //   value: 'haha'
   // };
   try {
-    await ConfigureModel.createOrUpdate(data);
+    if (Array.isArray(data)) {
+      await Promise.all(data.map((item) => {
+        return ConfigureModel.createOrUpdate(item);
+      }));
+    } else {
+      await ConfigureModel.createOrUpdate(data);
+    }
     res.json({
       'success': true,
       'data': data
     });
-  } catch (err){
+  } catch (err) {
     console.error(err);
     res.json({
       'success': false,
@@ -48,7 +54,26 @@ router.post('/find', async (req, res, next) => {
       'success': true,
       'data': data
     });
-  } catch (err){
+  } catch (err) {
+    console.error(err);
+    res.json({
+      'success': false,
+      'message': err.message
+    });
+  }
+});
+
+/**
+ * 全部数据
+ */
+router.get('/getAll', async (req, res, next) => {
+  try {
+    let data = await ConfigureModel.getDatas();
+    res.json({
+      'success': true,
+      'data': data
+    });
+  } catch (err) {
     console.error(err);
     res.json({
       'success': false,

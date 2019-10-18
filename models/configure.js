@@ -27,12 +27,7 @@ module.exports = {
   // 更新一行数据
   update: function (data) {
     data.modifyTime = now();
-    data.createTime = now();
-    if (!data.version) {
-      data.version = 1;
-    } else {
-      data.version += 1;
-    }
+    // data.createTime = now();
     return Configure.findOneAndUpdate({key: data.key}, {$set: data})
       .exec();
   },
@@ -50,8 +45,19 @@ module.exports = {
     }
     let val = await this.getDataByKey(key);
     if (val) {
-      val.value = data.value;
-      this.update(val);
+      for (let key in val) {
+        if (key === '_id' || key === 'createTime') {
+          data[key] = val[key];
+        }
+      }
+      if (!data.version) {
+        if (!val.version) {
+          data.version = 1;
+        } else {
+          data.version = val.version + 1;
+        }
+      }
+      this.update(data);
     } else {
       this.create(data);
     }
