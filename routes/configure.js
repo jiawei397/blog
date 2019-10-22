@@ -29,7 +29,7 @@ router.post('/add', async (req, res, next) => {
     }
     res.json({
       'success': true,
-      'data': data
+      'data': true
     });
   } catch (err) {
     console.error(err);
